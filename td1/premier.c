@@ -3,17 +3,21 @@
 int main()
 {
 	int x;
-	printf("Entrez un nombre entier: \n");
+	int i;
+	
+	printf("Entrez un nombre entier: ");
 	scanf("%d",&x);
 	
-	if((x % x == 1) && (x % 1 == 1)){
-		if(x<10) printf("Le chiffre est premier.\n");
-		else printf("Le nombre est premier.\n");
+	while((i*i)<x && 
+	{
+		if((x%i == 1) && (x%i == x))
+		{
+			printf("Le nombre est premier");
+		}
+		else printf("Le nombre n'est pas premier");
+		
 	}
-	else{
-		if(x<10) printf("Le chiffre n'est pas premier.\n");
-		else printf("Le nombre n'est pas premier.\n");
-	}
+	
 	
 	return(0);	
 }
