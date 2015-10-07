@@ -37,3 +37,14 @@ int main()
 	return 0;
 }
 
+/*
+ * Correction en récursif
+ * 
+ * mult_egyp(int x, int y, int reste)
+ * {
+ * 		if(x == 0) Renvoyer (reste) // et affichage avec printf
+ * 		if(x % 2) Renvoyer mult_egyp(x-1,y,reste+y)
+ * 		else Renvoyer mult_egyp(x\2,y*2,reste)
+ * 
+ * }
+
