@@ -2,23 +2,17 @@
 
 int main()
 {
-	int x;
-	int i;
+	int n,i;
 	
-	printf("Entrez un nombre entier: ");
-	scanf("%d",&x);
+	printf("Entrez un nombre entier n : ");
+	scanf("%d",&n);
+	i = 1;
 	
-	while((i*i)<x && 
-	{
-		if((x%i == 1) && (x%i == x))
-		{
-			printf("Le nombre est premier");
-		}
-		else printf("Le nombre n'est pas premier");
+	do{ i++; }
+	while( ((i*i)<n)  &&  (!(n%i == 0)) );
+	
+	if ( (i*i) >n ) printf("%d est premier\n",n);
+	else printf("%d n'est pas premier\n",n);
 		
-	}
-	
-	
-	return(0);	
+	return(0);
 }
-
