@@ -5,18 +5,21 @@ void affiche    (int *tableau, int taille);
 int  produit    (int *tableau, int taille);
 int  minimum    (int *tableau, int taille);
 void decalage   (int *tableau, int taille);
+void insere     (int *tableau, int taille);
 
 
 int main()
 {
 	int taille = 6;
-	int tableau[] = { 3, 7, 12, 9, 1, 4};
+	int tableau[] = { 3, 7, 12, 9, 1, 4 };
 	
 	
 	affiche(tableau, taille);
 	
 	printf("Produit des éléments du tableau : %d\n", produit(tableau, taille));
 	printf("Minimum du tableau = %d\n", minimum(tableau, taille));
+	
+	// Décalage
 	printf("Effet du décalage : ");
 	decalage(tableau, taille);
 	affiche(tableau, taille);
@@ -79,13 +82,22 @@ int minimum (int *tableau, int taille)
 
 void decalage (int *tableau, int taille)
 {
-	tableau[0] = 0;
-	tableau[taille] = -1;
-	
 	int i;
 	
-	for(i=1; i<=taille-1; i++) // On commence à 1 car la 1re case (tableau[0]) vaut déjà 0 et la dernière est supprimée (-1)
+	for(i=taille; i>=0; i--)
 	{
-		tableau[i] = tableau[i+1];		
+		tableau[i+1] = tableau[i];		
 	}
+	tableau[0] = 0; // 1re case à 0
+	tableau[taille] = -1; // Dernière case supprimée	
 }
+
+
+void insere (int *tableau, int taille)
+{
+	/* 1) Insertion dans un tableau trié
+	 * 2) Après insertion le tableau est toujours trié
+	 * 3) Le dernier élément du tableau est supprimée
+	 * */
+}
+
