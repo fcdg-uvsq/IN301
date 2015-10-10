@@ -51,7 +51,10 @@ int main(int argc, char **argv)
 	putchar('\n'); 
 	printf("Tableau après décalage : \n"); 
 	affiche(T);	
-		
+	printf("Taille du tableau après le décalage = %d\n", T.taille);
+	
+	
+	
 	return 0;
 }
 
@@ -121,7 +124,7 @@ int produit(Tableau T)
 }
 
 
-Tableau decalage (Tableau T)
+Tableau decalage(Tableau T)
 {
 	int i;
 	
@@ -131,8 +134,35 @@ Tableau decalage (Tableau T)
 	}
 	
 	T.tab[0] = 0; // 1re case à 0
-	T.taille = -1; // Dernière case supprimée
+	T.taille = T.taille + 1; // Augmentation de 1 de la taille du tableau
 	
 	return T;	
 }
 
+
+void echange(int *x, int *y)
+{
+	int z;
+		
+	z = *x;
+	*x = *y;
+	*y = z;
+}
+
+
+Tableau trie(Tableau T)
+{
+	int min = T.tab[0];
+	
+	int i;
+	for(i=0; i<T.taille; i++)
+	{
+		if(T.tab[min] > T.tab[i])
+		{
+			min = i;
+		}
+	}
+	
+	echange(min, i);
+	
+}
