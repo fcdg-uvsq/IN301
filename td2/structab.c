@@ -14,12 +14,13 @@ typedef struct tableau Tableau;
 
 // PROTOTYPES //
 
-int alea (int n);
+int     alea       (int n);
 Tableau initialise (Tableau T);
-void affiche       (Tableau T);
-int minimum      (Tableau T);
-int produit      (Tableau T);
-Tableau decalage (Tableau T);
+void    affiche    (Tableau T);
+int     minimum    (Tableau T);
+int     produit    (Tableau T);
+Tableau decalage   (Tableau T);
+Tableau trie       (Tableau T);
 
 ////////////////
 
@@ -43,7 +44,8 @@ int main(int argc, char **argv)
 	
 	affiche(T);
 	printf("Elément minimum du tableau : %d\n", minimum(T));
-	printf("Produit des éléments du tableau : %d\n", produit(T));
+	if (produit(T) < 0) printf("Produit trop grand"); // Evite d'afficher un produit négatif sur des entiers non signés
+	else printf("Produit des éléments du tableau : %d\n", produit(T));
 	
 	
 	// Décalage //
@@ -51,8 +53,13 @@ int main(int argc, char **argv)
 	putchar('\n'); 
 	printf("Tableau après décalage : \n"); 
 	affiche(T);	
-	printf("Taille du tableau après le décalage = %d\n", T.taille);
+	printf("Taille du tableau après le décalage = %d\n\n", T.taille);
 	
+	
+	// Trie //
+	printf("Après trie du tableau : \n");
+	T = trie(T);
+	affiche(T);	
 	
 	
 	return 0;
@@ -139,7 +146,7 @@ Tableau decalage(Tableau T)
 	return T;	
 }
 
-
+/*
 void echange(int *x, int *y)
 {
 	int z;
@@ -148,21 +155,27 @@ void echange(int *x, int *y)
 	*x = *y;
 	*y = z;
 }
-
+*/
 
 Tableau trie(Tableau T)
 {
-	int min = T.tab[0];
+	//int min = T.tab[0];
 	
-	int i;
+	
+	int i, j, tmp;
+	
 	for(i=0; i<T.taille; i++)
-	{
-		if(T.tab[min] > T.tab[i])
 		{
-			min = i;
+		for(j=0; j<T.taille; j++)
+		{
+			tmp = T.tab[T.taille]; 
+			T.tab[T.taille] = T.tab[j];
+			T.tab[j] = tmp;
 		}
 	}
 	
-	echange(min, i);
+	return T;
+	
+	
 	
 }
