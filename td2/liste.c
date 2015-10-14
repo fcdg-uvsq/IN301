@@ -19,6 +19,7 @@ void  libereMemoire (Liste l);
 Liste ajoutDebut    (Liste l, int e);
 Liste ajoutFin      (Liste l, int e);
 Liste ajoutTrie     (Liste l, int e);
+void  testListeTrie (Liste l);
 
 ////////////////
 
@@ -26,11 +27,13 @@ int main(int argc, char **argv)
 {
 	Liste l = creerListe();
 
-	l = ajoutDebut(l,4);
 	l = ajoutDebut(l,7);
+	l = ajoutDebut(l,4);
 	l = ajoutFin(l,9);
-	l = ajoutTrie(l,6);
+	//l = ajoutTrie(l,6);
 	afficheListe(l);
+	testListeTrie(l);
+	
 	
 	return 0;
 }
@@ -74,7 +77,7 @@ void afficheListe(Liste l)
 
 void libereMemoire(Liste l)
 {	
-	if (l != NULL)
+	if (!estVide(l))
 	{
 		libereMemoire(l->suiv); // On se rappelle récursivement sur la Liste
 		free(l);
@@ -100,10 +103,27 @@ Liste ajoutFin(Liste l, int e)
 	l1->val = e;
 	l1->suiv = NULL;
 	
-	if(l == NULL) return ajoutDebut(l,e);
+	if(estVide(l)) return ajoutDebut(l,e);
 	l->suiv = ajoutFin(l->suiv,e);
 	
 	return(l);
+}
+
+
+
+void testListeTrie(Liste l)
+{
+	if(estVide(l)) printf("La liste est vide.\n");
+	
+	else
+	{
+		while( (l->val) <= (l->suiv->val) )
+		{
+			l = l->suiv;
+		}
+		if(estVide(l)) printf("La liste est triée.\n");
+		else printf("La liste n'est pas triée.\n");		
+	}
 }
 
 
@@ -113,10 +133,15 @@ Liste ajoutTrie(Liste l, int e)
 	l1->val = e;
 	l1->suiv = NULL;
 	
-	if(l == NULL) return ajoutDebut(l,e);
+	if(estVide(l)) return ajoutDebut(l,e);
 	
-	if(l->val > l1->val) ajoutDebut(l,e); // Si toutes les valeurs de la liste sont >e on ajout e au tout début
-	else ajoutTrie(l->suiv,e);
+	
+	if(l->val > e)
+	{
+		l = ajoutDebut(l,e); // Si toutes les valeurs de la liste sont >e on ajout e au tout début
+	}
+	
+	else l->suiv = ajoutTrie(l->suiv,e);
 	
 	return(l);	
 }
