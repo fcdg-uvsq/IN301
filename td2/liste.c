@@ -19,7 +19,7 @@ void  libereMemoire (Liste l);
 Liste ajoutDebut    (Liste l, int e);
 Liste ajoutFin      (Liste l, int e);
 Liste ajoutTrie     (Liste l, int e);
-void  testListeTrie (Liste l);
+int  testListeTrie (Liste l);
 
 ////////////////
 
@@ -111,19 +111,26 @@ Liste ajoutFin(Liste l, int e)
 
 
 
-void testListeTrie(Liste l)
+int testListeTrie(Liste l)
 {
 	if(estVide(l)) printf("La liste est vide.\n");
 	
 	else
 	{
-		while( (l->val) <= (l->suiv->val) )
+		while(!estVide(l))
 		{
-			l = l->suiv;
+			if( (l->val) <= (l->suiv->val) ) // Si la valeur courant est <= valeur suivante
+			{
+				l = l->suiv;
+			}
+			
 		}
+		//else printf("La liste n'est pas triée.\n");
+		
 		if(estVide(l)) printf("La liste est triée.\n");
-		else printf("La liste n'est pas triée.\n");		
+		else 		
 	}
+
 }
 
 
@@ -135,13 +142,10 @@ Liste ajoutTrie(Liste l, int e)
 	
 	if(estVide(l)) return ajoutDebut(l,e);
 	
-	
-	if(l->val > e)
-	{
-		l = ajoutDebut(l,e); // Si toutes les valeurs de la liste sont >e on ajout e au tout début
-	}
+	if(l->val > e)  l = ajoutDebut(l,e); // Si toutes les valeurs de la liste sont >e on ajout e au tout début
 	
 	else l->suiv = ajoutTrie(l->suiv,e);
+	
 	
 	return(l);	
 }
