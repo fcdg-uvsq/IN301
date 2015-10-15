@@ -19,21 +19,32 @@ void  libereMemoire (Liste l);
 Liste ajoutDebut    (Liste l, int e);
 Liste ajoutFin      (Liste l, int e);
 Liste ajoutTrie     (Liste l, int e);
-int  testListeTrie (Liste l);
+int   testListeTrie (Liste l);
+int   alea          (int n);
+Liste aleaListe     ();
 
 ////////////////
 
 int main(int argc, char **argv)
 {
+	srand(time(NULL));
+	
 	Liste l = creerListe();
 
-	l = ajoutDebut(l,7);
+	/*
 	l = ajoutDebut(l,4);
+	l = ajoutDebut(l,7);
 	l = ajoutFin(l,9);
-	//l = ajoutTrie(l,6);
-	afficheListe(l);
-	testListeTrie(l);
 	
+	afficheListe(l);
+	printf("Retour de la fonction testListeTrie = %d\n",testListeTrie(l));
+	
+	//l = ajoutTrie(l,6);
+	//afficheListe(l);
+	*/
+	
+	l = aleaListe();
+	afficheListe(l);
 	
 	return 0;
 }
@@ -113,27 +124,25 @@ Liste ajoutFin(Liste l, int e)
 
 int testListeTrie(Liste l)
 {
-	if(estVide(l)) printf("La liste est vide.\n");
-	
-	else
+	while(!estVide(l))
 	{
-		while(!estVide(l))
+		if(l->suiv != NULL)
 		{
-			if( (l->val) <= (l->suiv->val) ) // Si la valeur courant est <= valeur suivante
+			if( (l->val) > ((l->suiv)->val) ) // Si la valeur courant est <= valeur suivante
 			{
-				l = l->suiv;
-			}
-			
+				printf("La liste n'est pas triée.\n");
+				return(0);
+			}		
 		}
-		//else printf("La liste n'est pas triée.\n");
-		
-		if(estVide(l)) printf("La liste est triée.\n");
-		else 		
+		l = l->suiv;
 	}
-
+		
+	printf("La liste est triée.\n");
+	return(1);
 }
 
 
+/*
 Liste ajoutTrie(Liste l, int e)
 {
 	Liste l1 = malloc(sizeof(l1));
@@ -146,8 +155,26 @@ Liste ajoutTrie(Liste l, int e)
 	
 	else l->suiv = ajoutTrie(l->suiv,e);
 	
-	
 	return(l);	
+}
+*/
+
+
+int alea(int n)
+{
+	return rand() % n;
+}
+
+Liste aleaListe()
+{
+	Liste l = creerListe();
+	
+	while(!estVide(l))
+	{
+		l->val = alea(20);
+	}
+	return l;
+	
 }
 
 
