@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 struct element{
 	int val;
 	struct element *suiv;
 };
-
 typedef struct element *Liste;
+
+/* On peut définir la liste soit en 2 typedefs soit en 1 seul
+typedef struct element Element
+typedef struct Element *Liste */
+
 
 
 // PROTOTYPES //
@@ -19,11 +24,16 @@ void  libereMemoire (Liste l);
 Liste ajoutDebut    (Liste l, int e);
 Liste ajoutFin      (Liste l, int e);
 Liste ajoutTrie     (Liste l, int e);
-int   testListeTrie (Liste l);
+int   verifTrie     (Liste l);
 int   alea          (int n);
 Liste aleaListe     ();
+int   nombreElement (Liste l);
+int   recherche     (Liste l, int e);
+
 
 ////////////////
+
+
 
 int main(int argc, char **argv)
 {
@@ -35,16 +45,20 @@ int main(int argc, char **argv)
 	l = ajoutDebut(l,4);
 	l = ajoutDebut(l,7);
 	l = ajoutFin(l,9);
-	
-	afficheListe(l);
-	printf("Retour de la fonction testListeTrie = %d\n",testListeTrie(l));
-	
+	* */
+	//afficheListe(l);
+		
 	//l = ajoutTrie(l,6);
 	//afficheListe(l);
-	*/
 	
-	l = aleaListe();
+	
+	l = aleaListe(l);
 	afficheListe(l);
+	
+	printf("Nombre d'élément(s) : %d\n", nombreElement(l));
+	
+	int e = 4; // Valeur que l'on recherche
+	//printf("Valeur de renvoie de la recherche : %d.\n", recherche(l,e));
 	
 	return 0;
 }
@@ -63,7 +77,7 @@ Liste creerListe()
 
 int estVide(Liste l)
 {
-	return (l == NULL) ? 1 : 0;
+	return (l == NULL); // Renvoie directement la valeur du test
 }
 
 
@@ -76,7 +90,7 @@ void afficheListe(Liste l)
 		
 	else
 	{
-		while(l != NULL)
+		while(!estVide(l))
 		{
 			printf("%d\t", l->val);
 			l = l->suiv;
@@ -99,7 +113,7 @@ void libereMemoire(Liste l)
 Liste ajoutDebut(Liste l, int e)
 {
 	Liste l1;
-	l1 = malloc(sizeof(l1));
+	l1 = malloc(sizeof(struct element));
 	
 	l1->val = e;
 	l1->suiv = l;
@@ -110,7 +124,7 @@ Liste ajoutDebut(Liste l, int e)
 
 Liste ajoutFin(Liste l, int e)
 {	
-	Liste l1 = malloc(sizeof(l1));
+	Liste l1 = malloc(sizeof(struct element));
 	l1->val = e;
 	l1->suiv = NULL;
 	
@@ -121,8 +135,7 @@ Liste ajoutFin(Liste l, int e)
 }
 
 
-
-int testListeTrie(Liste l)
+int verifTrie(Liste l)
 {
 	while(!estVide(l))
 	{
@@ -142,22 +155,23 @@ int testListeTrie(Liste l)
 }
 
 
-/*
 Liste ajoutTrie(Liste l, int e)
 {
-	Liste l1 = malloc(sizeof(l1));
-	l1->val = e;
-	l1->suiv = NULL;
-	
-	if(estVide(l)) return ajoutDebut(l,e);
-	
-	if(l->val > e)  l = ajoutDebut(l,e); // Si toutes les valeurs de la liste sont >e on ajout e au tout début
-	
-	else l->suiv = ajoutTrie(l->suiv,e);
-	
-	return(l);	
+	if(verifTrie(l) == 1)
+	{
+		Liste l1 = malloc(sizeof(struct element));
+		l1->val = e;
+		l1->suiv = NULL;
+		
+		if(estVide(l)) return ajoutDebut(l,e);
+		if(l->val > e)    l = ajoutDebut(l,e); // Si toutes les valeurs de la liste sont >e on ajout e au tout début
+		else l->suiv = ajoutTrie(l->suiv,e);
+		
+		return(l);	
+    }
+    
+    else return(l);
 }
-*/
 
 
 int alea(int n)
@@ -165,17 +179,50 @@ int alea(int n)
 	return rand() % n;
 }
 
+
 Liste aleaListe()
-{
-	Liste l = creerListe();
+{	
+	Liste l = NULL;
 	
-	while(!estVide(l))
-	{
-		l->val = alea(20);
-	}
-	return l;
-	
+	do{
+		l = ajoutDebut(l, alea(100));
+	}while( (l->val) != 0 );
+
+	return l;		
 }
+
+
+int nombreElement(Liste l)
+{
+	/*
+	if(estVide(l)) return 0;
+	return nombreElement(l->suiv) + 1;
+	*/
+	// EN ITERATIF	
+	
+	int compteur = 0;
+	
+	if(estVide(l)) return(compteur);
+	
+	else
+	{
+		while(!estVide(l))
+		{
+			compteur++;
+			l = l->suiv;
+		}
+	}
+	return(compteur);
+}
+
+
+int recherche(Liste l, int e)
+{
+	if((l->val) == e) return 1;
+	e = recherche(l->suiv, e);
+	//return 0;		
+}
+
 
 
 
