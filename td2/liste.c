@@ -26,9 +26,10 @@ Liste ajoutFin      (Liste l, int e);
 Liste ajoutTrie     (Liste l, int e);
 int   verifTrie     (Liste l);
 int   alea          (int n);
-Liste aleaListe     ();
+Liste aleaListe     (int n);
 int   nombreElement (Liste l);
 int   recherche     (Liste l, int e);
+Liste supprime      (Liste l, int e);
 
 
 ////////////////
@@ -41,24 +42,26 @@ int main(int argc, char **argv)
 	
 	Liste l = creerListe();
 
-	/*
-	l = ajoutDebut(l,4);
-	l = ajoutDebut(l,7);
-	l = ajoutFin(l,9);
-	* */
-	//afficheListe(l);
 		
-	//l = ajoutTrie(l,6);
-	//afficheListe(l);
-	
-	
-	l = aleaListe(l);
+	//l = aleaListe(100);
+	l = ajoutDebut(l,666);
+	l = ajoutDebut(l,42);
+	l = ajoutFin(l,999);
 	afficheListe(l);
 	
 	printf("Nombre d'élément(s) : %d\n", nombreElement(l));
 	
-	int e = 4; // Valeur que l'on recherche
-	//printf("Valeur de renvoie de la recherche : %d.\n", recherche(l,e));
+	// RECHERCHE
+	int chercheNbr = 999; // Valeur que l'on recherche
+	if(recherche(l,chercheNbr) == 1) printf("%d présent dans la liste !\n",chercheNbr);
+	else printf("%d non présent dans la liste !\n",chercheNbr);
+	printf("Valeur de renvoie de la recherche : %d.\n", recherche(l,chercheNbr));
+	
+	// SUPPRIME
+	int supprimeNbr = 666; // Valeur que l'on supprime
+	printf("Suppression de %d.\n", supprimeNbr);
+	l  = supprime(l,supprimeNbr);
+	afficheListe(l);
 	
 	return 0;
 }
@@ -92,7 +95,7 @@ void afficheListe(Liste l)
 	{
 		while(!estVide(l))
 		{
-			printf("%d\t", l->val);
+			printf("%d ", l->val);
 			l = l->suiv;
 		}	
 	}
@@ -179,7 +182,7 @@ int alea(int n)
 	return rand() % n;
 }
 
-
+/*
 Liste aleaListe()
 {	
 	Liste l = NULL;
@@ -188,18 +191,39 @@ Liste aleaListe()
 		l = ajoutDebut(l, alea(100));
 	}while( (l->val) != 0 );
 
-	return l;		
+	return l;
 }
+* */
 
+// Correction du prof
+
+Liste aleaListe(int n)
+{
+	int x;
+	Liste l = creerListe();
+		
+	while(1)
+	{
+		x = rand()%n;
+		
+		if(x == 0) return l;
+		
+		else l = ajoutDebut(l,x);		
+	}
+	return l;
+}
+			
 
 int nombreElement(Liste l)
 {
-	/*
-	if(estVide(l)) return 0;
-	return nombreElement(l->suiv) + 1;
-	*/
-	// EN ITERATIF	
+	// EN RECURSIF
 	
+	if(estVide(l)) return 0;
+	return 1 + nombreElement(l->suiv);
+	
+	
+	// EN ITERATIF	
+	/*
 	int compteur = 0;
 	
 	if(estVide(l)) return(compteur);
@@ -212,17 +236,51 @@ int nombreElement(Liste l)
 			l = l->suiv;
 		}
 	}
-	return(compteur);
+	return(compteur); */
 }
 
 
 int recherche(Liste l, int e)
 {
+	if(estVide(l)) return 0;
+	
 	if((l->val) == e) return 1;
-	e = recherche(l->suiv, e);
-	//return 0;		
+	else return(e = recherche(l->suiv, e));		
 }
 
 
+Liste supprime(Liste l, int e)
+{
+	
+	// Si triée
+		// au début 
+		/*
+		Liste p = l->suiv;
+		return (p);
+		*/
+		
+		// milieu
+		Liste p = l;
+		while(!estVide(p))
+		{
+			if( (p->suiv->val) != e)
+				{
+					p->suiv = p->suiv->suiv;
+				}
+			p = p->suiv;
+		}
+		
+		
+		
+		//fin
+	
+	
+	// Si non triée
+		// au début
+		
+		// milieu
+		
+		//fin
+}
 
 
