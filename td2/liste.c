@@ -30,7 +30,9 @@ Liste aleaListe     (int n);
 int   nombreElement (Liste l);
 int   recherche     (Liste l, int e);
 Liste supprime      (Liste l, int e);
-
+Liste concatene     (Liste l1, Liste l2);
+Liste renverse      (Liste l);
+Liste entrelace     (Liste l1, Liste l2);
 
 ////////////////
 
@@ -40,27 +42,52 @@ int main(int argc, char **argv)
 {
 	srand(time(NULL));
 	
-	Liste l = creerListe();
-
-		
-	//l = aleaListe(100);
+	// OPERATIONS DE BASES 
+/*	Liste l = creerListe();		
+	l = aleaListe(10);
 	l = ajoutDebut(l,666);
-	l = ajoutDebut(l,42);
-	l = ajoutFin(l,999);
+	l = ajoutDebut(l,42); 
+	l = ajoutDebut(l,999);
+	afficheListe(l);
+	printf("Nombre d'élément(s) : %d\n", nombreElement(l));
+	printf("Recherche de %d : %d (1 = Dans la liste - 0 = Pas dans la liste)\n", 999, recherche(l,999));	
+	
+		
+	// SUPPRIME
+	printf("Suppression de %d.\n", 666);
+	l  = supprime(l,666);
 	afficheListe(l);
 	
-	printf("Nombre d'élément(s) : %d\n", nombreElement(l));
 	
-	// RECHERCHE
-	int chercheNbr = 999; // Valeur que l'on recherche
-	if(recherche(l,chercheNbr) == 1) printf("%d présent dans la liste !\n",chercheNbr);
-	else printf("%d non présent dans la liste !\n",chercheNbr);
-	printf("Valeur de renvoie de la recherche : %d.\n", recherche(l,chercheNbr));
+	// CONCATENE
+	Liste l1 = aleaListe(10); afficheListe(l1);
+	Liste l2 = aleaListe(10); afficheListe(l2);
+	       concatene(l1,l2); afficheListe(l1); 
+	        
+	        
+	// RENVERSE
+	Liste l = aleaListe(10);
+	afficheListe(l);
+	l = renverse(l);
+	afficheListe(l); */
 	
-	// SUPPRIME
-	int supprimeNbr = 666; // Valeur que l'on supprime
-	printf("Suppression de %d.\n", supprimeNbr);
-	l  = supprime(l,supprimeNbr);
+	
+	// ENTRELACE
+	Liste l1 = creerListe();
+	l1 = ajoutDebut(l1,7);
+	l1 = ajoutDebut(l1,8);
+	l1 = ajoutDebut(l1,10);
+	l1 = renverse(l1);
+	
+	Liste l2 = creerListe();
+	l2 = ajoutDebut(l2,3);
+	l2 = ajoutDebut(l2,9);
+	l2 = ajoutDebut(l2,11);
+	l2 = renverse(l2);
+	
+	afficheListe(l1); afficheListe(l2);
+	
+	Liste l = entrelace(l1,l2);
 	afficheListe(l);
 	
 	return 0;
@@ -195,7 +222,7 @@ Liste aleaListe()
 }
 * */
 
-// Correction du prof
+// Correction pour l'aleaListe
 
 Liste aleaListe(int n)
 {
@@ -245,42 +272,181 @@ int recherche(Liste l, int e)
 	if(estVide(l)) return 0;
 	
 	if((l->val) == e) return 1;
-	else return(e = recherche(l->suiv, e));		
+	else return(recherche(l->suiv, e));		
 }
 
+/*
+Liste supprime(Liste l, int e)
+{
+	// Supprime toute la liste
+	* 
+	if(estVide(l)) return l;
+	if((l->val) == e) return NULL;
+	else return supprime(l->suiv, recherche(l->suiv, e));	
+	
+	// Supprime qu'un seul élément
+	* 
+	* 
+	if(estVide(l)) return l;
+	
+	Liste p = malloc(sizeof(int));
+	p = l;
+	
+	if(recherche(p,e))
+	{
+		if(p->val == e)  // Si au début
+		{
+			return (p->suiv);
+		}		 
+		
+		if( (p->suiv->val) == e) // Si ni début ni fin
+		{
+			p->suiv = p->suiv->suiv;
+		}
+		
+		// Ne fonctionne pas pour la fin
+		if( ((p->suiv->val) == e)  &&  ((p->suiv->suiv) == NULL) )  //Si élément à la fin
+		{
+			p->suiv = NULL;
+		}
+	}
+	
+	return p;	
+}*/
+	
+// Correction pour la suppression
 
 Liste supprime(Liste l, int e)
 {
+	if(estVide(l)) return l;
 	
-	// Si triée
-		// au début 
-		/*
-		Liste p = l->suiv;
-		return (p);
-		*/
-		
-		// milieu
-		Liste p = l;
-		while(!estVide(p))
+	Liste temp = l;
+	
+	if( (l->val) == e)  // 1er élément à supprimer
+	{
+		temp = l->suiv;
+		free(l);
+		return temp;		
+	}
+	
+	while( (temp->suiv->val != e)  && (temp->suiv != NULL) )
+	{
+		temp = temp->suiv;
+		if(temp->suiv != NULL)
 		{
-			if( (p->suiv->val) != e)
-				{
-					p->suiv = p->suiv->suiv;
-				}
-			p = p->suiv;
+			Liste v = temp->suiv;
+			temp->suiv = temp->suiv->suiv;
+			free(v);
+		}
+	}
+	return l;	
+}
+	
+
+Liste concatene(Liste l1, Liste l2)
+{
+	if (estVide(l1)) return l2;
+	else l1->suiv = concatene(l1->suiv, l2);
+	return l1;	
+}
+
+
+Liste renverse(Liste l)
+{
+	if( estVide(l) || estVide(l->suiv) ) return l;
+	
+	
+	Liste  res = creerListe();	
+	
+	while(!estVide(l))
+	{
+		res = ajoutDebut(res,l->val);
+		l   = l->suiv;
+	}	
+	return res;
+}
+
+
+Liste entrelace(Liste l1, Liste l2)
+{
+	if(estVide(l1)) return l2;
+	if(estVide(l2)) return l1;
+	
+	Liste l = creerListe();
+	
+	if( verifTrie(l1) && verifTrie(l2) ) // on vérifie si les 2 listes sont triées
+	{
+		while( (!estVide(l1)) && (!estVide(l2)) ) // tant que les deux listes ne sont pas vides
+		{
+			if( (l1->val) > (l2->val) )
+			{
+				l  = ajoutDebut(l, l2->val);
+				l1 = l1->suiv;
+			}
+			else
+			{
+				l  = ajoutDebut(l, l1->val);
+				l2 = l2->suiv;
+			}			
+		}						
+	}
+	
+	l = renverse(l); // On renverse la liste puisqu'on a ajouté au début
+}
+
+
+/* CORRECTION DU PROF
+Liste fusion(Liste l1, Liste l2)
+{
+	Liste debut, fin;
+	
+	if(estVide(l1)) return l2;
+	if(estVide(l2)) return l1;
+	
+	if( (l1->val) < (l2->val) )
+	{
+		debut = l1;
+		fin = l1;
+		l1 = l1->suiv;
+	}
+	
+	else
+	{
+		debut = l2;
+		fin = l2;
+		l2 = l2->suiv;
+	}
+	
+	while( (!estVide(l1)) && (!estVide(l2)) )
+	{
+		if( (l1->val) < (l2->val) )
+		{
+			fin->suiv = l1;
+			l1 = l1->suiv;
+			fin = fin->suiv;
 		}
 		
-		
-		
-		//fin
+		else
+		{
+			fin->suiv = l2;
+			l2 = l2->suiv;
+			fin = fin->suiv;
+		}		
+	}
 	
+	if(l1==NULL)
+	{
+		fin->suiv = l2;
+	}
+	else
+	{
+	fin->suiv = l1;	
+	}
 	
-	// Si non triée
-		// au début
-		
-		// milieu
-		
-		//fin
+	return debut;	
 }
+*/
+
+
 
 
