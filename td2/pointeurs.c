@@ -4,7 +4,7 @@ void permute (int *x, int *y);
 void reinitPointeur (int** p);
 
 int main(int argc, char **argv)
-{	/*
+{	
 	// QUESTION a) // 
 	
 	printf("char :   %u\n", sizeof(char));
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 	char tab[10];
 	
 	printf("tab :      %u\n",   sizeof(tab));      // Taille du tableau * taille d'un char >> 10 * 1 = 10
-	printf("tab[0] :   %u\n",   sizeof(tab[0]));   // <=> sizeof(int) puisque c'est un élément char (taille = 1) du tableau
+	printf("tab[0] :   %u\n",   sizeof(tab[0]));   // <=> sizeof(char) puisque c'est un élément char (taille = 1) du tableau
 	printf("&tab[0] :  %u\n",   sizeof(&tab[0]));  // Adresse - codée sur ce pc sur 4 octets
 	printf("*&tab :    %u\n",   sizeof(*&tab));    // * et & sont des opérateurs complémentaires s'annulant
 	printf("*&tab[0] : %u\n\n", sizeof(*&tab[0])); // <=> tab[0]
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 	
 	
 	return(0);	
-	*/
+	
 	
 	/*
 	// QUESTION b) //
@@ -62,14 +62,14 @@ int main(int argc, char **argv)
 	
 	
 	// QUESTION c) //
-	
+	/*
 	int a = 1;
 	int* p = &a;
 	
 	printf("Adresse de a : %p\n", p);	
 	reinitPointeur(&p); // On passe l'adresse du pointeur p
 	printf("Adresse de a après réinitialisation : %p\n", p);
-	
+	*/
 	return(0);
 	
 }
